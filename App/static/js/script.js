@@ -90,11 +90,21 @@ function get_images() {
                 var idx=1;
                 for (const [key, value] of Object.entries(data['attend'])) {
                     console.log(key, value);
+                    if(value==0)
+                    {
+                        $('#attendance').find('tbody').append($('<tr>')
+                        .append($('<th>').append(idx++))
+                        .append($('<td>').append(key))
+                        .append($('<td class="bg-success">').append('Present'))
+                        )
+                    }
+                    else{
                     $('#attendance').find('tbody').append($('<tr>')
                     .append($('<th>').append(idx++))
                     .append($('<td>').append(key))
-                    .append($('<td>').append(value==0?'Absent':'Present'))
-                  )
+                    .append($('<td class="bg-danger">').append('Absent'))
+                    )
+                    }
                 }
                 drawChart(data['attentive'])
             }
