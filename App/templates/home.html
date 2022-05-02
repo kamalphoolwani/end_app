@@ -49,13 +49,12 @@
 
                 <h2 class="text-center text-dark mt-5">Welcome {{user}}</h2>
                 <div class="card my-5">
-                    <nav aria-label="start_stop">
-                        <div class="d-flex flex-row">
-                            <button class="btn btn-color w-25 h-25" onclick="start_class()">Start Class</button>
-                            <button class="btn btn-color w-25 h-25" style="" onclick="end_class()">End Class</button>
-                        </div>
-                    </nav>
-
+                    <input type="button" style="background-color: #023d5f;
+                    border: none;
+                    color: white;
+                    padding: 16px 32px;
+                    text-decoration: none;
+                    cursor: pointer;" value="Start" onclick="javaScript:startStopClass()" id="startButton">
                 </div>
             </div>
         </div>
@@ -101,7 +100,18 @@
         <div class="row">
             <h1>attentive</h1>
         </div>
-        <div id="piechart" style="border: 5px solid #383800; padding: 50px 50px; margin-left: auto; margin-right: auto;"></div>
+        <div class="rowmine">
+            <div class="column" style="padding-left: 60px;">
+                <div id="piechart"></div>
+            </div>
+            <div class="column">
+                <div style="text-align: center; padding-top: 210px;">
+                    <div> <img id="bulbimg" src="./static/red.png"></div>
+                </div>
+                
+            </div>
+            
+        </div>
 
     </div>
 
