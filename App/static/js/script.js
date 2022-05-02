@@ -7,6 +7,7 @@ function init() {
     $('#attendance').hide();
     $('#attentive').hide();
     $('#activator').hide();
+    $('#smoker_detector').hide();
     $('#default_error').hide();
 
         // $('#plots').find('tr').not('#table_header').hide();
@@ -18,6 +19,7 @@ function home() {
     $('#attendance').hide();
     $('#attentive').hide();
     $('#activator').hide();
+    $('#smoker_detector').hide();
     $('#default_error').hide();
 }
 
@@ -29,6 +31,7 @@ function attendance() {
         $('#attendance').show();
         $('#attentive').hide();
         $('#activator').hide();
+        $('#smoker_detector').hide();
         $('#default_error').hide();
     }
 }
@@ -41,6 +44,7 @@ function attentive() {
         $('#attendance').hide();
         $('#attentive').show();
         $('#activator').hide();
+        $('#smoker_detector').hide();
         $('#default_error').hide();
     }
 }
@@ -53,6 +57,20 @@ function activator() {
         $('#attendance').hide();
         $('#attentive').hide();
         $('#activator').show();
+        $('#smoker_detector').hide();
+        $('#default_error').hide();
+    }
+}
+
+function smoker_detector() {
+    if (!isStarted)
+        display_error()
+    else {
+        $('#home').hide();
+        $('#attendance').hide();
+        $('#attentive').hide();
+        $('#activator').hide();
+        $('#smoker_detector').show();
         $('#default_error').hide();
     }
 }
@@ -126,6 +144,7 @@ function display_error() {
     $('#attendance').hide();
     $('#attentive').hide();
     $('#activator').hide();
+    $('#smoker_detector').hide();
     $('#default_error').show();
 }
 
