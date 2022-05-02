@@ -100,10 +100,10 @@ def get_updates_async(i):
         data = {
             'image':image
         }
-        student_name = pf.getmodeldata('1',data,'')
+        student_name = pf.getmodeldata('1',data,'/model/1')
         student_name = student_name.lower()
         print("Student_name: ",student_name)
-        emotion_status = int(pf.getmodeldata('2',data,''))
+        emotion_status = int(pf.getmodeldata('2',data,'/model/1'))
         
         stud = Students.query.filter_by(stud_name=student_name).first()
         print("Stud: ", stud)
@@ -248,7 +248,7 @@ def motiondetector():
         data = {
             'image':frame
         }
-        MOTION = int(pf.getmodeldata(motionmodelid,data,''))
+        MOTION = int(pf.getmodeldata(motionmodelid,data,'/model/1'))
         print("Motion: ", MOTION)
 
 def tempdata():

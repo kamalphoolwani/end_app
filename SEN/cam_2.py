@@ -6,10 +6,10 @@ import sys
 import numpy as np
 app = Flask(__name__)
 
-# kafka_server = sys.argv[1]
-# topic_name = sys.argv[2]
-kafka_server = '52.140.63.83:9092'
-topic_name='cam_2'
+kafka_server = sys.argv[1]
+topic_name = sys.argv[2]
+# kafka_server = '52.140.63.83:9092'
+# topic_name='cam_2'
 producer = KafkaProducer(bootstrap_servers=[kafka_server])
 while(1):
   producer = KafkaProducer(bootstrap_servers=[kafka_server])
