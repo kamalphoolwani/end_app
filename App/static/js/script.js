@@ -1,13 +1,14 @@
 var isStarted = false
 
 function init() {
+    get_controller()
     console.log('init called')
     sessionStorage.setItem("user", "{{ username }}")
     $('#cameras').hide();
     $('#attendance').hide();
     $('#attentive').hide();
-    $('#activator').hide();
-    $('#smoker_detector').hide();
+    $('#controller').hide();
+    $('#smoke_detector').hide();
     $('#default_error').hide();
 
         // $('#plots').find('tr').not('#table_header').hide();
@@ -18,8 +19,8 @@ function home() {
     $('#home').show();
     $('#attendance').hide();
     $('#attentive').hide();
-    $('#activator').hide();
-    $('#smoker_detector').hide();
+    $('#controller').hide();
+    $('#smoke_detector').hide();
     $('#default_error').hide();
 }
 
@@ -30,8 +31,8 @@ function attendance() {
         $('#home').hide();
         $('#attendance').show();
         $('#attentive').hide();
-        $('#activator').hide();
-        $('#smoker_detector').hide();
+        $('#controller').hide();
+        $('#smoke_detector').hide();
         $('#default_error').hide();
     }
 }
@@ -43,36 +44,29 @@ function attentive() {
         $('#home').hide();
         $('#attendance').hide();
         $('#attentive').show();
-        $('#activator').hide();
-        $('#smoker_detector').hide();
+        $('#controller').hide();
+        $('#smoke_detector').hide();
         $('#default_error').hide();
     }
 }
 
-function activator() {
-    if (!isStarted)
-        display_error()
-    else {
+function controller() {
         $('#home').hide();
         $('#attendance').hide();
         $('#attentive').hide();
-        $('#activator').show();
-        $('#smoker_detector').hide();
+        $('#controller').show();
+        $('#smoke_detector').hide();
         $('#default_error').hide();
-    }
+    
 }
 
-function smoker_detector() {
-    if (!isStarted)
-        display_error()
-    else {
+function smoke_detector() {
         $('#home').hide();
         $('#attendance').hide();
         $('#attentive').hide();
-        $('#activator').hide();
-        $('#smoker_detector').show();
+        $('#controller').hide();
+        $('#smoke_detector').show();
         $('#default_error').hide();
-    }
 }
 
 function start_class() {
@@ -134,7 +128,65 @@ get_img_interval=setInterval(function() {
     get_images() // this will run after every 5 seconds
 }, 35000);
 
+
+function get_controller(){
+    $.ajax({
+        type: "GET",
+
+        url: "/detect_motion",
+        data: '',
+        success: function (data) {
+            console.log('inside get controller',data)
+            console.log("Motion Data: ", data['motion'])
+            console.log("Fan Data: ", data['fan'])
+            var bg_class = data['motion']==0?'danger':'success'
+
+            $('#fan').find('tbody').empty()
+            $('#ac').find('tbody').empty()
+            $('#light').find('tbody').empty()
+            $('#computer').find('tbody').empty()
+
+            for(var i=1;i<=4;i++){
+                $('#fan').find('tbody').append($('<tr>')
+                .append($('<th>').append(i))
+                .append($('<td>').append('Fan '+String(i)))
+                .append($('<td>').append(data['fan']))
+                .append($('<td class="bg-'+bg_class+'">').append(data['motion']==0?'OFF':'ON'))
+                // .append($('<td class="bg-'+  data['motion']==0?'danger':'success'  +'">').append(data['motion']==0?'OFF':'ON'))
+                )
+            }
+
+            for(var i=1;i<=2;i++){
+                $('#ac').find('tbody').append($('<tr>')
+                .append($('<th>').append(i))
+                .append($('<td>').append('AC '+String(i)))
+                .append($('<td class="bg-'+bg_class+'">').append(data['motion']==0?'OFF':'ON'))
+                )
+            }
+
+            for(var i=1;i<=2;i++){
+                $('#light').find('tbody').append($('<tr>')
+                .append($('<th>').append(i))
+                .append($('<td>').append('Light '+String(i)))
+                .append($('<td class="bg-'+bg_class+'">').append(data['motion']==0?'OFF':'ON'))
+                )
+            }
+
+            $('#computer').find('tbody').append($('<tr>')
+            .append($('<th>').append(i))
+            .append($('<td>').append('Computer 1'))
+            .append($('<td class="bg-'+bg_class+'">').append(data['motion']==0?'OFF':'ON'))
+            )
+        }
+    });
+}
+
+get_controller_interval=setInterval(function() {
+    get_controller() // this will run after every 5 seconds
+}, 10000);
+
 function logout() {
+    clearInterval(get_controller_interval)
     end_class()
     window.location = 'logout'
 }
@@ -143,8 +195,8 @@ function display_error() {
     $('#home').hide();
     $('#attendance').hide();
     $('#attentive').hide();
-    $('#activator').hide();
-    $('#smoker_detector').hide();
+    $('#controller').hide();
+    $('#smoke_detector').hide();
     $('#default_error').show();
 }
 
