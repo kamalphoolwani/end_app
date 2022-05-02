@@ -17,7 +17,7 @@
 </head>
 
 <body onload="init()">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="overflow: hidden; background-color: rgb(0, 0, 0); position: fixed; z-index: 1000; top: 0; width: 100%;">
         <a class="navbar-brand" onclick="home()">Classroom Application</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
@@ -42,7 +42,7 @@
         <button type="submit" class="btn" onclick="logout()" value="LogIn" style="float: right; width: 10%; height: 5%;">LogOut</button>
     </nav>
 
-    <div class="container_home" id="home">
+    <div class="container_home" style="margin-top: 30px;" id="home">
 
         <div class="row">
             <div class="col-md-9 offset-md-1">
@@ -51,8 +51,8 @@
                 <div class="card my-5">
                     <nav aria-label="start_stop">
                         <div class="d-flex flex-row">
-                            <button class="btn btn-color w-25 h-25 p-2" onclick="start_class()">Start Class</button>
-                            <button class="btn btn-color w-25 h-25 p-2" onclick="end_class()">End Class</button>
+                            <button class="btn btn-color w-25 h-25" onclick="start_class()">Start Class</button>
+                            <button class="btn btn-color w-25 h-25" style="" onclick="end_class()">End Class</button>
                         </div>
                     </nav>
 
@@ -62,22 +62,22 @@
 
         <div class="row" id="cameras">
             <div class="col-md-4" id="camera1">
-                <h3>Camera1</h3>
+                <h3 style="align-self: auto;">Camera1</h3>
                 <img src="./static/default.jpg" alt="Camera1 Feed" width="400" height="250">
             </div>
             <div class="col-md-4" id="camera2">
-                <h3>Camera2</h3>
+                <h3 style="align-self: auto;">Camera2</h3>
                 <img src="./static/default.jpg" alt="Camera2 Feed" width="400" height="250">
             </div>
             <div class="col-md-4" id="camera3">
-                <h3>Camera3</h3>
+                <h3> Camera3</h3>
                 <img src="./static/default.jpg" alt="Camera3 Feed" width="400" height="250">
             </div>
         </div>
 
     </div>
 
-    <div class="container_attendance" id="attendance">
+    <div class="container_attendance" style="margin-top: 30px;" id="attendance">
 
         <div class="row">
             <h1>Attendance</h1>
@@ -96,16 +96,16 @@
 
     </div>
 
-    <div class="container_attentive" id="attentive">
+    <div class="container_attentive" style="margin-top: 30px;" id="attentive">
 
         <div class="row">
             <h1>attentive</h1>
         </div>
-        <div id="piechart"></div>
+        <div id="piechart" style="border: 5px solid #383800; padding: 50px 50px; margin-left: auto; margin-right: auto;"></div>
 
     </div>
 
-    <div class="container_activator" id="activator">
+    <div class="container_activator" style="margin-top: 30px;" id="activator">
 
         <div class="row">
             <h1>Activator</h1>
@@ -113,7 +113,7 @@
 
     </div>
 
-    <div class="default_error" id="default_error">
+    <div class="default_error" style="margin-top: 70px;" id="default_error">
         <div class="alert alert-danger" role="alert" id="login_err_msg" style="display: block;">Please Start Class before accessing this page.</div>
     </div>
 </body>
