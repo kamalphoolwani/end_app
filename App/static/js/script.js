@@ -68,11 +68,21 @@ function smoke_detector() {
         $('#smoke_detector').show();
         $('#default_error').hide();
 }
-
+var classStart = null;
+startStopClass = function(){
+    if(classStart != null){
+        end_class();
+        change();
+    } else {
+        start_class();
+        change();
+    }
+}
 function start_class() {
     isStarted = true
     get_images()
     $('#cameras').show();
+    classStart=1;
 
 }
 
@@ -83,7 +93,14 @@ function end_class() {
     $('#camera2').find('img').attr('src', './static/default.jpg');
     $('#camera3').find('img').attr('src', './static/default.jpg');
     $('#cameras').hide();
+    classStart=null;
 }
+
+change = function(){
+    var elem = document.getElementById("startButton");
+    if (elem.value=="Stop") elem.value = "Start";
+    else elem.value = "Stop";
+    }
 
 function get_images() {
 
@@ -215,10 +232,15 @@ function drawChart(a) {
   ['Non-Attentive', 100-a]
 ]);
 
-  // Optional; add a title and set the width and height of the chart
   var options = {'title':'Class Attentiveness', 'width':750, 'height':750, backgroundColor: { fill:'transparent' }};
 
-  // Display the chart inside the <div> element with id="piechart"
   var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+  if(a<=50){
+    document.getElementById("bulbimg").src="./static/red.png";
+  }
+  else{
+    document.getElementById("bulbimg").src="./static/green.png";
+
+  }
   chart.draw(data, options);
 }
