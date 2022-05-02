@@ -9,9 +9,10 @@ app = Flask(__name__)
 # kafka_server = sys.argv[1]
 # topic_name = sys.argv[2]
 kafka_server = '52.140.63.83:9092'
+producer = KafkaProducer(bootstrap_servers=[kafka_server])
 topic_name='cam_3'
 while(1):
-  producer = KafkaProducer(bootstrap_servers=[kafka_server])
+  # producer = KafkaProducer(bootstrap_servers=[kafka_server])
   image = cv2.imread("cg1.jpeg")
   ret, buffer = cv2.imencode('.jpeg', image)
   print("Buffer: ",buffer.shape)

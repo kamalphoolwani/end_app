@@ -12,11 +12,13 @@ class motiondetector:
         if not len(self.frames):
             return 0
         frame1 = np.array(self.frames[0],dtype= np.uint8)
+        # frame1 = np.reshape(frame1, (200,200,3))
         gray1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
         gray1 = cv2.GaussianBlur(gray1, (21, 21), 0)
 
         for fr in  self.frames[1:]:
             frame = np.array(fr,dtype= np.uint8)
+            # frame = np.reshape(frame, (200,200,3))
             gray2 = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             gray2 = cv2.GaussianBlur(gray2, (21, 21), 0)
             

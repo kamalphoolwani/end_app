@@ -15,7 +15,7 @@ classes = {'pins_Adriana Lima': 0, 'pins_Alex Lawther': 1, 'pins_Alexandra Dadda
 
 
 class_names = list(classes.keys())
-
+TEMP = 0.0
 app = Flask(__name__)
 dir = os.getcwd()
 db = SQLAlchemy(app)
@@ -69,6 +69,7 @@ def extract_faces(collage):
         temp_image  = resized.tolist()
         res.append(temp_image)
     return res
+
 
 
 def get_updates_async(i):
@@ -136,25 +137,6 @@ def get_updates():
     print("Data Sent to Client")
     return res,200 
 
-
-@app.route("/detect_motion")
-def motion_detection():
-    frames= []
-    num_of_sensors = 4
-    # for x in range(1,num_of_sensors+1):
-    for x in range(10):
-        fr = pf.getsensordata1(str(1))['image']
-        frames.append(fr)
-    data = {
-        'image':frames
-    }
-    # if type(fr) == type([]):
-    #     frames.append(fr)
-    # elif type(fr) == type(np.array([1])):
-    #     frames.append(fr.tolist())
-    return pf.getmodeldata('3',data)
-
-
 @app.route('/start_class', methods=['POST'])
 def start_class():
     # TODO: set 0 for attendance and attentiveness
@@ -199,24 +181,60 @@ def signup():
 def index():
      return render_template('signup.html')
 
-@app.route('/detect_motion')
+@app.route('/detect_motion', methods=['GET'])
 def motiond():
-    return str(motion)
+    data = dict()
+    t = 0
+    if(MOTION==1):
+        if(TEMP<25):
+            t = 0
+        elif TEMP>=25 and TEMP<27:
+            t = 1
+        elif TEMP>=27 and TEMP<29:
+            t = 2
+        elif TEMP>=29 and TEMP<32:
+            t = 3
+        else:
+            t = 4
+        data={
+            'motion':1,
+            'fan':t
+        }  
+
+    else:
+        data={
+            'motion':0,
+            'fan':t
+        }
+
+    return data
 
 def motiondetector():
-    global motion
-    motionsensorid = '1'
+    global MOTION
+    motionsensorid = '4'
     motionmodelid = '3'
     prevframe = None
     while(1):
         frame = []
         if prevframe != None:
             frame.append(prevframe)
-        for _ in range(10):
-            frame.append(pf.getsensordata(motionsensorid)['image'])
-        motion = int(pf.getmodeldata(motionmodelid))
+        for x in range(2):
+            frame.append(pf.getsensordata1(motionsensorid)['image'])
+            print("frame num: ",x)
+            print("Shape: ", np.array(frame[x]).shape)
+        data = {
+            'image':frame
+        }
+        MOTION = int(pf.getmodeldata(motionmodelid,data))
+        print("Motion: ", MOTION)
 
-
+def tempdata():
+    global TEMP
+    tempsensorid = '5'
+    while(1):
+        TEMP = pf.getsensordata1(tempsensorid)
+        print("Temp: ", TEMP)
+    
 
 if __name__ == "__main__":
     db.create_all()
@@ -230,11 +248,15 @@ if __name__ == "__main__":
         except Exception as e:
             print(e)
             break
-    t_list = [None]*3
-    for i in range(1,4):
-        t_list[i-1] = threading.Thread(target=pf.getsensordata1, args=(str(i),))
-        t_list[i-1].start()
+    # t_list = [None]*3
+    # for i in range(1,4):
+    #     t_list[i-1] = threading.Thread(target=pf.getsensordata1, args=(str(i),))
+    #     t_list[i-1].start()
     #    return {"key":"cool"}
 
-    threading.Thread(target = motiondetector)
+    t1 = threading.Thread(target = motiondetector)
+    t1.start()
+    t2 = threading.Thread(target = tempdata)
+    t2.start()
+
     app.run(debug=False, port=5000, host='0.0.0.0',threaded=True)
