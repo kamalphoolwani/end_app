@@ -32,10 +32,13 @@
                     <a class="nav-link" onclick="attendance()">Attendance</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" onclick="attentive()">Attentive</a>
+                    <a class="nav-link" onclick="attentive()">Attentiveness</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" onclick="activator()">Activator</a>
+                    <a class="nav-link" onclick="activator()">Controller</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="smoker_detector()">Smoker Detector</a>
                 </li>
             </ul>
         </div>
@@ -99,7 +102,7 @@
     <div class="container_attentive" style="margin-top: 30px;" id="attentive">
 
         <div class="row">
-            <h1>attentive</h1>
+            <h1>Attentiveness</h1>
         </div>
         <div id="piechart" style="border: 5px solid #383800; padding: 50px 50px; margin-left: auto; margin-right: auto;"></div>
 
@@ -108,9 +111,37 @@
     <div class="container_activator" style="margin-top: 30px;" id="activator">
 
         <div class="row">
-            <h1>Activator</h1>
+            <h1>Controller</h1>
         </div>
+        <table class="table table-dark">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Device</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+    </div>
 
+    <div class="container_smoke_detector" style="margin-top: 30px;" id="smoke_detector">
+
+        <div class="row">
+            <h1>Smoke Detector</h1>
+        </div>
+        <table class="table table-dark">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Device</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
     </div>
 
     <div class="default_error" style="margin-top: 70px;" id="default_error">
