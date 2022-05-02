@@ -90,7 +90,7 @@ function get_images() {
                 var idx=1;
                 for (const [key, value] of Object.entries(data['attend'])) {
                     console.log(key, value);
-                    if(value==0)
+                    if(value==1)
                     {
                         $('#attendance').find('tbody').append($('<tr>')
                         .append($('<th>').append(idx++))
@@ -145,7 +145,7 @@ function drawChart(a) {
 ]);
 
   // Optional; add a title and set the width and height of the chart
-  var options = {'title':'Class Attentiveness', 'width':550, 'height':400};
+  var options = {'title':'Class Attentiveness', 'width':750, 'height':750, backgroundColor: { fill:'transparent' }};
 
   // Display the chart inside the <div> element with id="piechart"
   var chart = new google.visualization.PieChart(document.getElementById('piechart'));
