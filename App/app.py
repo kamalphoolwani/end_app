@@ -19,9 +19,9 @@ class_names = list(classes.keys())
 app = Flask(__name__)
 dir = os.getcwd()
 db = SQLAlchemy(app)
-file_path = os.path.abspath(os.getcwd())+"/class.db"
+file_path = os.path.abspath(os.getcwd())+"\class.db"
 app.config['SESSION_SQLALCHEMY'] = db
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + file_path
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////" + file_path
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 class Students(db.Model):
@@ -48,17 +48,6 @@ class Teacher(db.Model):
         self.email = email
         self.password = password
     
-def detectmotion():
-    frames= []
-    for x in range(10):
-        fr = pf.getsensordata(4)
-        if type(fr) == type([]):
-            frames.append(fr)
-        elif type(fr) == type(np.array([1])):
-            frames.append(fr.tolist())
-    return pf.getmodeldata(frames)
-
-
 
 def extract_faces(collage):
     res = []
@@ -75,7 +64,7 @@ def extract_faces(collage):
     for (x, y, w, h) in faces:
         cv2.rectangle(collage, (x, y), (x + w, y + h), (0, 255, 0), 2)
         roi_color = collage[y:y + h, x:x + w]
-        resized = cv2.resize(roi_color, (300, 300), interpolation=cv2.INTER_AREA)
+        resized = cv2.resize(roi_color, (160, 160), interpolation=cv2.INTER_AREA)
         # print("resize type : ", type(resized))
         temp_image  = resized.tolist()
         res.append(temp_image)
@@ -99,10 +88,13 @@ def get_updates_async(i):
             'image':image
         }
         student_name = pf.getmodeldata('1',data)
-        # print("Student_name: ",student_name)
+        student_name = student_name.lower()
+        print("Student_name: ",student_name)
         emotion_status = int(pf.getmodeldata('2',data))
         
         stud = Students.query.filter_by(stud_name=student_name).first()
+        print("Stud: ", stud)
+        # stud = Students.query.get(student_name)
         stud.attendance = 1
         stud.attentive = emotion_status
         db.session.commit()
@@ -143,6 +135,24 @@ def get_updates():
     }
     print("Data Sent to Client")
     return res,200 
+
+
+@app.route("/detect_motion")
+def motion_detection():
+    frames= []
+    num_of_sensors = 4
+    # for x in range(1,num_of_sensors+1):
+    for x in range(10):
+        fr = pf.getsensordata1(str(1))['image']
+        frames.append(fr)
+    data = {
+        'image':frames
+    }
+    # if type(fr) == type([]):
+    #     frames.append(fr)
+    # elif type(fr) == type(np.array([1])):
+    #     frames.append(fr.tolist())
+    return pf.getmodeldata('3',data)
 
 
 @app.route('/start_class', methods=['POST'])
@@ -189,16 +199,42 @@ def signup():
 def index():
      return render_template('signup.html')
 
+@app.route('/detect_motion')
+def motiond():
+    return str(motion)
+
+def motiondetector():
+    global motion
+    motionsensorid = '1'
+    motionmodelid = '3'
+    prevframe = None
+    while(1):
+        frame = []
+        if prevframe != None:
+            frame.append(prevframe)
+        for _ in range(10):
+            frame.append(pf.getsensordata(motionsensorid)['image'])
+        motion = int(pf.getmodeldata(motionmodelid))
+
+
+
 if __name__ == "__main__":
     db.create_all()
     db.session.commit()
     for i in class_names:
         try:
-            i = i[5:]
+            i = i[5:].lower()
             student = Students(stud_name=i,attendance=0,attentive=-1)
             db.session.add(student)
             db.session.commit()
         except Exception as e:
             print(e)
             break
+    t_list = [None]*3
+    for i in range(1,4):
+        t_list[i-1] = threading.Thread(target=pf.getsensordata1, args=(str(i),))
+        t_list[i-1].start()
+    #    return {"key":"cool"}
+
+    threading.Thread(target = motiondetector)
     app.run(debug=False, port=5000, host='0.0.0.0',threaded=True)

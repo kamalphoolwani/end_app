@@ -17,6 +17,23 @@ sensors['4'] = 'cam_4'
 
 url = "http://127.0.0.1:8000"
 
+'''
+KAFKA_IP = "52.140.63.83:9092"
+motion_consumer = kafka.KafkaConsumer(
+bootstrap_servers=[KAFKA_IP]
+)
+
+def getsensorkafka(sensor = '1' , num = 20):
+    TOPIC = sensors[sensor]
+    topic_partition = TopicPartition(TOPIC, 0)
+    assigned_topic = [topic_partition]
+    consumer.assign(assigned_topic)
+    cp = consumer.position(topic_partition)
+    consumer.seek(topic_partition,cp-20)
+    
+'''
+
+
 
 def  getsensordata(sensor_id):
 	sensor_id = "S_" + str(sensor_id)

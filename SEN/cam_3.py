@@ -20,7 +20,7 @@ while(1):
   a = buffer.tobytes()
   data = np.frombuffer(a, dtype=buffer.dtype)
   print(data.shape)
-  sleep(20)
+  sleep(2)
 
 if __name__ == '__main__':
 	app.run(debug=True, port=5008)

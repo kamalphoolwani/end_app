@@ -14,12 +14,13 @@ while(1):
   producer = KafkaProducer(bootstrap_servers=[kafka_server], max_request_size=19801370) # <<<<<< Yaha problem hai, dusari image send ho rhi h pr cg1.jpg nhi ho rhi
   image = cv2.imread("cg1.jpeg")
   ret, buffer = cv2.imencode('.jpeg', image)
+  print("type: ", type(buffer))
   print(buffer.shape)
   # a=buffer.tobytes()
   producer.send(topic_name, buffer.tobytes())
   # data = np.frombuffer(a, dtype=buffer.dtype)
   # print(data.shape)
-  sleep(20)
+  sleep(2)
 
 if __name__ == '__main__':
 	app.run(debug=True, port=5007)

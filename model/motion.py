@@ -36,7 +36,7 @@ class motiondetector:
         return 0
 
 
-def predict(frames):
+def predict(image):
     obj = motiondetector()
-    res  = str(obj.predict(frames))
+    res  = str(obj.predict(image))
     return res
