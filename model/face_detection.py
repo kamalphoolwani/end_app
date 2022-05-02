@@ -19,7 +19,11 @@ def predict(image):
     img_array = np.array(image, dtype=np.float32)
     img_array = tf.expand_dims(img_array, 0)  # Create a batch
     img_array = img_array/255.
-
+    # img = tf.keras.preprocessing.image.load_img(
+    # img_array, target_size=(rows, cols)
+    # )
+    # img_array = tf.keras.preprocessing.image.img_to_array(img)
+    # img_array = tf.expand_dims(img_array, 0) # Create a batch
     score = model.predict(img_array)
     person = class_names[np.argmax(score)][5:].title()
     print(

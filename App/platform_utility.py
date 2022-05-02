@@ -13,9 +13,27 @@ sensor_ids_list = ['1']
 sensors['1'] = 'cam_1'
 sensors['2'] = 'cam_2'
 sensors['3'] = 'cam_3'
-sensors['4'] = 'cam_4'
+sensors['4'] = 'cam71'
+sensors['5'] = 'S_1'
 
 url = "http://127.0.0.1:8000"
+
+'''
+KAFKA_IP = "52.140.63.83:9092"
+motion_consumer = kafka.KafkaConsumer(
+bootstrap_servers=[KAFKA_IP]
+)
+
+def getsensorkafka(sensor = '1' , num = 20):
+    TOPIC = sensors[sensor]
+    topic_partition = TopicPartition(TOPIC, 0)
+    assigned_topic = [topic_partition]
+    consumer.assign(assigned_topic)
+    cp = consumer.position(topic_partition)
+    consumer.seek(topic_partition,cp-20)
+    
+'''
+
 
 
 def  getsensordata(sensor_id):
@@ -53,7 +71,10 @@ def getkafkadata(topic):
         print("Message Recieved: ", topic)
         try:
             res = json.loads(message.value)
-            return res
+            data = {
+                'data':res
+            }
+            return data
         except:
             stream = BytesIO(message.value)
         # print("Stream:", type(stream.getvalue()))
@@ -70,4 +91,9 @@ def getkafkadata(topic):
 
         return data
 
+def s
 
+def setcontrollerdata(sensor_id):
+    sensor_topic = sensors[sensor_id]
+    print("Sensor_Tpic: ", sensor_topic)
+    setkafkadata(sensor_topic)
